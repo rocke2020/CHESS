@@ -152,6 +152,7 @@ def make_db_lsh(db_directory_path: str, **kwargs: Any) -> None:
     """
     db_id = Path(db_directory_path).name
     preprocessed_path = Path(db_directory_path) / "preprocessed"
+    logging.info(f'{preprocessed_path = }')
     preprocessed_path.mkdir(exist_ok=True)
     
     unique_values = _get_unique_values(str(Path(db_directory_path) / f"{db_id}.sqlite"))

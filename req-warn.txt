@@ -1,0 +1,1 @@
+langchain-experimental 0.0.57 requires langchain<0.2.0,>=0.1.15, but you have langchain 0.1.8 which is incompatible.
