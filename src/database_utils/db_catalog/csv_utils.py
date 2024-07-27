@@ -13,6 +13,7 @@ def load_tables_description(db_directory_path: str, use_value_description: bool)
 
     Returns:
         Dict[str, Dict[str, Dict[str, str]]]: A dictionary containing table descriptions.
+        table-name -> column-name -> column-info: original_column_name, column_name, column_description, data_format, value_description
     """
     encoding_types = ['utf-8-sig', 'cp1252']
     description_path = Path(db_directory_path) / "database_description"

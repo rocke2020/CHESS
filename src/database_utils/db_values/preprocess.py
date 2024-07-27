@@ -16,6 +16,8 @@ def _get_unique_values(db_path: str) -> Dict[str, Dict[str, List[str]]]:
 
     Returns:
         Dict[str, Dict[str, List[str]]]: A dictionary containing unique values for each table and column.
+        unique_values[table_name] = table_values\n
+            table_values[column] = values
     """
     table_names = [table[0] for table in execute_sql(db_path, "SELECT name FROM sqlite_master WHERE type='table';", fetch="all")]
     primary_keys = []
@@ -32,14 +34,14 @@ def _get_unique_values(db_path: str) -> Dict[str, Dict[str, List[str]]]:
     for table_name in table_names:
         if table_name == "sqlite_sequence":
             continue
-        logging.info(f"Processing {table_name}")
+        logging.info(f"Processing {table_name = }")
         columns = [col[1] for col in execute_sql(db_path, f"PRAGMA table_info('{table_name}')", fetch="all") if ("TEXT" in col[2] and col[1].lower() not in [c.lower() for c in primary_keys])]
         table_values: Dict[str, List[str]] = {}
-        
+        logging.info(f'{columns = }')
         for column in columns:
             if any(keyword in column.lower() for keyword in ["_id", " id", "url", "email", "web", "time", "phone", "date", "address"]) or column.endswith("Id"):
                 continue
-
+            logging.info(f'collect unique_values in {column = }')
             result = execute_sql(db_path, f"""
                 SELECT SUM(LENGTH(unique_values)), COUNT(unique_values)
                 FROM (
@@ -51,6 +53,7 @@ def _get_unique_values(db_path: str) -> Dict[str, Dict[str, List[str]]]:
 
             sum_of_lengths, count_distinct = result
             if sum_of_lengths is None or count_distinct == 0:
+                logging.info(f'empty values in {column = }')
                 continue
 
             average_length = sum_of_lengths / count_distinct
