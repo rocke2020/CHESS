@@ -130,7 +130,9 @@ class RunManager:
         print('\x1b[1A' + '\x1b[2K' + '\x1b[1A')  # Clear previous line
         print(f"[{'=' * progress_length}>{' ' * (bar_length - progress_length)}] {self.processed_tasks}/{self.total_number_of_tasks}")
 
-    def load_checkpoint(self, db_id, question_id) -> Dict[str, List[str]]:
+    def load_checkpoint(self, db_id, question_id) -> Tuple[Dict[str, List[str]], List]:
+        """  """
+        # tentative_schema, Dict[str, List[str]]: A dictionary mapping table names to lists of column names.
         tentative_schema = DatabaseManager().get_db_schema()
         execution_history = []
         if self.args.use_checkpoint:
