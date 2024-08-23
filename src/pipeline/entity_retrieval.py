@@ -53,7 +53,7 @@ def get_similar_columns(keywords: List[str], question: str, hint: str) -> Dict[s
     logging.info("Retrieving similar columns")
     selected_columns = {}
     for keyword in keywords:
-        similar_columns = _get_similar_column_names(keyword=keyword, question=question, hint=hint)
+        similar_columns = _get_similarest_column_names(keyword=keyword, question=question, hint=hint)
         for table_name, column_name in similar_columns:
             selected_columns.setdefault(table_name, []).append(column_name)
     return selected_columns
@@ -114,9 +114,9 @@ def _does_keyword_match_column(keyword: str, column_name: str, threshold: float 
     similarity = difflib.SequenceMatcher(None, column_name, keyword).ratio()
     return similarity >= threshold
 
-def _get_similar_column_names(keyword: str, question: str, hint: str) -> List[Tuple[str, str]]:
+def _get_similarest_column_names(keyword: str, question: str, hint: str) -> List[Tuple[str, str]]:
     """
-    Finds column names similar to a keyword.
+    Finds the top1 most similar column names to a keyword.
 
     Args:
         keyword (str): The keyword to find similar columns for.
